@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "438107525336",
+    "firebase_url": "https://safetypal-337a7.firebaseio.com",
+    "project_id": "safetypal-337a7",
+    "storage_bucket": "safetypal-337a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438107525336:android:89164cf92f0804fa",
+        "android_client_info": {
+          "package_name": "com.example.evanblank.firebasetest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438107525336-0emitlrh201ohi6aucn7062n1ifojbd4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdAIrh_6671OSF2Kh8EXW2gKPJ_CqWNNk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438107525336:android:c75585676e53b8f2",
+        "android_client_info": {
+          "package_name": "com.example.evanblank.firebasetut"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438107525336-0emitlrh201ohi6aucn7062n1ifojbd4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdAIrh_6671OSF2Kh8EXW2gKPJ_CqWNNk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
