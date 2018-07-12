@@ -1,4 +1,4 @@
-package com.example.evanblank.firebasetut;
+package com.example.ucsc.SafetyPal;
 public class user {
     public String name;
 

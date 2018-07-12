@@ -1,4 +1,4 @@
-package com.example.evanblank.firebasetut;
+package com.example.ucsc.SafetyPal;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -20,8 +20,11 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance().getReference();
     }
 
-    public void openMap(View view) {
-        Intent mapsIntent = new Intent(this, MapsActivity.class);
-        startActivity(mapsIntent);
+    /*
+        Opens CurrentLocation activity on locationButton click.
+     */
+    public void openCurrentLocation(View view) {
+        Intent locationViewIntent = new Intent(this, CurrentLocation.class);
+        startActivity(locationViewIntent);
     }
 }

@@ -41,7 +41,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:438107525336:android:c75585676e53b8f2",
         "android_client_info": {
-          "package_name": "com.example.evanblank.firebasetut"
+          "package_name": "com.example.ucsc.SafetyPal"
         }
       },
       "oauth_client": [
