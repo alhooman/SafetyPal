@@ -10,14 +10,24 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 /*
  * @author Ali Hooman - alhooman@ucsc.edu
@@ -36,13 +46,19 @@ public class CurrentLocation extends AppCompatActivity
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     // Flag indicating whether permission was denied.
     private boolean mPermissionDenied = false;
-
     private GoogleMap mMap;
     private SupportMapFragment mapFragment;
+    private FusedLocationProviderClient mFusedLocationClient;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
     private final View mapView;
     private final OnGlobalLayoutAndMapReadyListener devCallBack;
     private boolean isViewReady;
     private boolean isMapReady;
+    private double lastKnownLong;
+    private double lastKnownLat;
+    private LatLng lastKnownLatLng;
+    private Location mLastKnownLocation;
+    private Marker currentMarker;
 
     /*
      * Listener for location
@@ -100,8 +116,11 @@ public class CurrentLocation extends AppCompatActivity
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-    }
 
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+    }
 
     /**
      * Manipulates the map once available.
@@ -117,8 +136,6 @@ public class CurrentLocation extends AppCompatActivity
         mMap = googleMap;
         isMapReady = true;
         fireCallbackIfReady();
-        Location mLastLocation;             // Last known location of device
-        Marker mCurrentLocationMarker;      // Marker for current (last known) device location
 
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
@@ -128,12 +145,29 @@ public class CurrentLocation extends AppCompatActivity
             mMap.setMyLocationEnabled(true);
         }
 
-        /* Saved for later reference
-         * // Add a marker in Sydney and move the camera
-         * LatLng sydney = new LatLng(-34, 151);
-         * mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-         * mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-         */
+        // Get last location
+        Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
+            locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
+                @Override
+                public void onComplete(@NonNull Task<Location> task) {
+                    if (task.isSuccessful()) {
+                        // Set the map's camera position to the current location of the device.
+                        mLastKnownLocation = task.getResult();
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                new LatLng(mLastKnownLocation.getLatitude(),
+                                        mLastKnownLocation.getLongitude()), 5));
+                        lastKnownLat = mLastKnownLocation.getLatitude();
+                        lastKnownLong = mLastKnownLocation.getLongitude();
+                    }
+                }
+        });
+/*
+        lastKnownLatLng = new LatLng(lastKnownLat, lastKnownLong);
+        mMap.clear();
+        currentMarker = mMap.addMarker(new MarkerOptions()
+                .position(lastKnownLatLng));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownLatLng, 5));
+        */
     }
 
     /*
