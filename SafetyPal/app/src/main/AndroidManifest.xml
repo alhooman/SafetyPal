@@ -10,6 +10,7 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".logIn">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,8 +41,12 @@
 
         <activity
             android:name=".CurrentLocation"
-            android:parentActivityName=".MainActivity"
-            android:label="MyLocation"></activity>
+            android:label="MyLocation"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ManageContacts"
+            android:label="ManageContacts"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
