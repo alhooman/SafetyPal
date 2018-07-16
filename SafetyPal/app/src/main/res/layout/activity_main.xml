@@ -4,119 +4,117 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_3"
     tools:context=".MainActivity">
 
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="230dp"
+        android:layout_height="168dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="220dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/caution2" />
+
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/button6"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/button_round2"
         android:text="1"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
+        android:textSize="35sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/button7"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/button_round2"
         android:text="2"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
+        android:textSize="35sp"
+        app:layout_constraintStart_toEndOf="@+id/button6"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/button8"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/button_round2"
         android:text="3"
-        app:layout_constraintEnd_toStartOf="@+id/button4"
+        android:textSize="35sp"
+        app:layout_constraintEnd_toStartOf="@+id/button9"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/button9"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/button_round2"
         android:text="4"
+        android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
+    <EditText
+        android:id="@+id/message_alert"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="SafetyPal"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="144dp"
+        android:background="#11000000"
+        android:drawableLeft="@drawable/ic_action_message"
+        android:ems="10"
+        android:hint=" Message"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="168dp"
-        android:onClick="sendSMSOnClick"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/caution_pic" />
 
     <Button
         android:id="@+id/Locationbutton"
         android:layout_width="170dp"
         android:layout_height="46dp"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="448dp"
         android:onClick="openCurrentLocation"
         android:text="Location"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/addContactsButton"
         android:layout_width="170dp"
         android:layout_height="46dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="384dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="448dp"
         android:onClick="openManageContacts"
         android:text="Add Contact"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.054" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/sosButton"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="sendSMSOnClick"
+        android:layout_marginTop="360dp"
         android:text="SOS"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
