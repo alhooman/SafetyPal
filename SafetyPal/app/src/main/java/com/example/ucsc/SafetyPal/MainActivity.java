@@ -42,17 +42,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(manageContactsViewIntent);
     }
 
-    /*
-     * Send SMS and location on SOS button click.
-     */
-    public void sendSMSOnClick(View View) {
-        for(SafetyContact contact : SafetyContact.safetyContactsList) {
-            String number = contact.getSafetyPhoneParsed();
-            String help = "Safety Pal alert: I need help!";
-            String SENT = "SMS Sent";
-            PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT), 0);
-            smsManager.sendTextMessage(number, null, help, sentPI, null);
-            smsManager.sendTextMessage("4087612025", null, help, null, null);
-        }
-    }
 }
