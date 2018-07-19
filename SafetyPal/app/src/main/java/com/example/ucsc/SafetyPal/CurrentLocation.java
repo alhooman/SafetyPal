@@ -28,6 +28,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /*
  * @author Ali Hooman - alhooman@ucsc.edu
@@ -41,6 +45,10 @@ public class CurrentLocation extends AppCompatActivity
         OnMapReadyCallback,
         OnGlobalLayoutListener,
         ActivityCompat.OnRequestPermissionsResultCallback {
+
+    // Firebase
+    private FirebaseAuth auth;
+    private DatabaseReference dataRef;
 
     // Request code for location permission request.
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -56,9 +64,7 @@ public class CurrentLocation extends AppCompatActivity
     private boolean isMapReady;
     private double lastKnownLong;
     private double lastKnownLat;
-    private LatLng lastKnownLatLng;
     private Location mLastKnownLocation;
-    private Marker currentMarker;
 
     /*
      * Listener for location
@@ -158,6 +164,15 @@ public class CurrentLocation extends AppCompatActivity
                                         mLastKnownLocation.getLongitude()), 5));
                         lastKnownLat = mLastKnownLocation.getLatitude();
                         lastKnownLong = mLastKnownLocation.getLongitude();
+
+                        // Add to Firebase user
+                        auth = FirebaseAuth.getInstance();
+                        FirebaseUser firebaseUser = auth.getCurrentUser();
+                        dataRef = FirebaseDatabase.getInstance().getReference().child(firebaseUser.getUid());
+
+                        dataRef.child("locationLat").setValue(lastKnownLat);
+                        dataRef.child("locationLong").setValue(lastKnownLong);
+
                     }
                 }
         });

@@ -47,6 +47,7 @@
             android:name=".ManageContacts"
             android:label="ManageContacts"
             android:parentActivityName=".MainActivity" />
+        <service android:name=".MyAlarmServices" />
     </application>
 
 </manifest>

@@ -1,8 +1,16 @@
 package com.example.ucsc.SafetyPal;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -11,35 +19,52 @@ import java.util.ArrayList;
  *
  * Manage the adding of safety contacts.
  */
-public class ManageContacts extends AppCompatActivity {
+public class ManageContacts extends AppCompatActivity implements View.OnClickListener {
+
+    private Button addContacts;
+    private EditText nameTextField;
+    private EditText emailTextField;
+    private EditText numberTextField;
+
+    private FirebaseAuth auth;
+    private DatabaseReference dataRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_contacts);
 
+        nameTextField = findViewById(R.id.inputName);
+        emailTextField = findViewById(R.id.inputEmail);
+        numberTextField = findViewById(R.id.inputPhone);
+
+        addContacts = findViewById(R.id.addContact);
+        addContacts.setOnClickListener(this);
+
     }
 
-    public void onAddContactButtonClick() {
-        SafetyContact contactToAdd = new SafetyContact();
+    @Override
+    public void onClick(View view) {
+        String name = nameTextField.getText().toString();
+        String email = emailTextField.getText().toString();
+        String number = numberTextField.getText().toString();
 
-        // input name
-        EditText inputName = (EditText) findViewById(R.id.inputName);
-        contactToAdd.setSafetyContactName(inputName.getText().toString());
+        contact newFriend = new contact(name, email, number);
+        auth = FirebaseAuth.getInstance();
 
-        // input email
-        EditText inputEmail = (EditText) findViewById(R.id.inputEmail);
-        contactToAdd.setSafetyContactEmail(inputEmail.getText().toString());
 
-        // input phone
-        EditText inputPhone = (EditText) findViewById(R.id.inputPhone);
-        contactToAdd.setSafetyContactPhone(inputPhone.getText().toString());
+        if(auth.getCurrentUser() == null){
+            finish();
+            startActivity(new Intent(this, logIn.class));
+        }
 
-        SafetyContact.safetyContactsList.add(contactToAdd);
+        //dataRef = FirebaseDatabase.getInstance().getReference().child(user.getUid());
+        FirebaseUser user = auth.getCurrentUser();
+        dataRef = FirebaseDatabase.getInstance().getReference().child(user.getUid());
+        DatabaseReference userContactList = dataRef.child("ContactList").push();
+        userContactList.setValue(newFriend);
 
-        inputName.clearComposingText();
-        inputEmail.clearComposingText();
-        inputPhone.clearComposingText();
-
+        finish();
+        startActivity(new Intent(this, MainActivity.class));
     }
 }
