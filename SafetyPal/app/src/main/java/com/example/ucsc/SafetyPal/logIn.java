@@ -121,7 +121,7 @@ public class  logIn extends AppCompatActivity implements View.OnClickListener{
                             finish();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
-                            Toast.makeText(logIn.this, "Not Registered Succesfully.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(logIn.this, "Not Registered, try again.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -207,7 +207,7 @@ public class  logIn extends AppCompatActivity implements View.OnClickListener{
                             finish();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else {
-                            Toast.makeText(logIn.this, "Log In Unsuccesfully", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(logIn.this, "Log In failed, try again.", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

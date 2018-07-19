@@ -36,6 +36,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.io.Serializable;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DatabaseReference dataRef;
     private Button logOutButton;
     private Button alarmStart;
+    private ImageView imageView;    // Make giant yellow thing clickable
 
     /*
      * Location provider objects
@@ -88,6 +90,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         alarmStart = findViewById(R.id.alarmChange);
         alarmStart.setOnClickListener(this);
+
+        imageView = findViewById(R.id.imageView);
+        imageView.setOnClickListener(this);
 
         auth = FirebaseAuth.getInstance();
 
@@ -302,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(this, logIn.class));
         }
 
-        if(view == alarmStart){
+        if(view == alarmStart || view == imageView){
             dataRef.child("isAlarmActivated").setValue(true);
             callGetLastLocation();
 
