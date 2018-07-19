@@ -58,6 +58,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView latView;
     private TextView longView;
 
+    /*
+     * SMS Manager objects
+     * Ali Hooman (alhooman@ucsc.edu)
+     */
+    private SmsManager smsManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -196,6 +202,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /*
+     * Opens default SMS application to send a request for help.
+     * Ali Hooman (alhooman@ucsc.edu)
+     */
+    public void sendRequestHelpSMS() {
+        // Create intent
+        String intentTypeSMS = "vnd.android-dir/mms-sms";
+        Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+        // Fill in phone number and message body
+        sendIntent.putExtra("sms_body", "safetyPal test");
+        sendIntent.putExtra("address", new String("4087612025"));
+        // Start intent
+        sendIntent.setType(intentTypeSMS);
+        startActivity(sendIntent);
+    }
+
+    /*
      * Opens CurrentLocation activity on locationButton click.
      */
     public void openCurrentLocation(View view) {
@@ -223,6 +245,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(view == alarmStart){
             dataRef.child("isAlarmActivated").setValue(true);
             callGetLastLocation();
+
+            sendRequestHelpSMS(); // Text for help from contacts
         }
+
+
     }
 }
