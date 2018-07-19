@@ -46,7 +46,7 @@
         android:id="@+id/editText2"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:layout_alighnLeft="@+id/editText"
+
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="181dp"
