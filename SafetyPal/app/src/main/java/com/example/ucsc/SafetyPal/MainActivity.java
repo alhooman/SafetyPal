@@ -64,6 +64,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private SmsManager smsManager;
 
+    /*
+     * Contact list
+     * Ali Hooman (alhooman@ucsc.edu)
+     *
+     * This list is public at the moment and does not survive application shutdown.
+     * //TODO   Save list to Firebase
+     * //TODO   Make list not public
+     *
+     * Initial public declaration of contactList within MainActivity.java does not work. Activities
+     * are transient and simply attempting to access an object of one activity, despite it being
+     * public and static, will not work from another activity.
+     */
+     public List<contact> contactList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alarmStart.setOnClickListener(this);
 
         auth = FirebaseAuth.getInstance();
-
 
         if(auth.getCurrentUser() == null){
             finish();
@@ -127,12 +140,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         /*
          * Fused Location provider updates for device last known location
          *
-         * Ali Hooman - alhooman@ucsc.edu
+         * Ali Hooman (alhooman@ucsc.edu)
          */
         // Create location services client.
         latView = (TextView) findViewById(R.id.mainLatView);
         longView = (TextView) findViewById(R.id.mainLongView);
-
+        // Create location provider client
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Initialize Location object to coordinate: 0,0 to avoid nullPointerException
         lastDeviceLocation = new Location("");
@@ -142,14 +155,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         callGetLastLocation();
         setLatAndLongTextViews(lastDeviceLocation);
 
-    }
+        /*
+         * Setup contact list
+         * Ali Hooman (alhooman@ucsc.edu)
+         */
+        //contactList = new ArrayList<contact>();
+        com.example.ucsc.SafetyPal.Globals g = (com.example.ucsc.SafetyPal.Globals)getApplication();
+        contactList = g.getContactList();
 
-    /*
-     * Retrieves lastDeviceLocation Location object.
-     * Ali Hooman (alhooman@ucsc.edu)
-     */
-    public Location getLastDeviceLocation() {
-        return this.lastDeviceLocation;
     }
 
     /*
@@ -206,12 +219,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Ali Hooman (alhooman@ucsc.edu)
      */
     public void sendRequestHelpSMS() {
+
+        // Update location
+        callGetLastLocation();
+
+        /*
+         * Create maps cross-platform url using device latitude and longitude coordinates.
+         * Example: https://www.google.com/maps/search/?api=1&query=47.5951518,-122.3316393
+         *
+         * commonMapsUrl is the initial part of the maps URL
+         * ?api=1  -- This is required and must be set to 1. No other option is valid.
+         * &query= -- This is required to set the map to a specific location.
+         */
+        String commonMapsUrl = "https://www.google.com/maps/search/?api=1&query=";
+        String currentLocMapUrl;
+        String latString = String.valueOf(lastDeviceLocation.getLatitude());    // Latitude
+        String longString = String.valueOf(lastDeviceLocation.getLongitude());   // Longitude
+        currentLocMapUrl = commonMapsUrl + latString + "," + longString;    // Build url
+
+        // Distress message
+        String helpMeAlert = "SafetyPal alert: ";
+        helpMeAlert = helpMeAlert + currentLocMapUrl;
+
+        // Recipients
+        String smsRecipients = "1234567890";
+        if(contactList.size() < 1) {
+            // Avoid out of bounds error
+        }
+        else if(contactList.size() == 1) {
+            smsRecipients = contactList.get(0).getPalPhonePlain();
+        }
+        else {
+            smsRecipients = contactList.get(0).getPalPhonePlain();
+            for(int index = 1; index < contactList.size(); index++) {
+                smsRecipients = smsRecipients + ";" + contactList.get(index).getPalPhonePlain();
+            }
+        }
+
         // Create intent
         String intentTypeSMS = "vnd.android-dir/mms-sms";
         Intent sendIntent = new Intent(Intent.ACTION_VIEW);
         // Fill in phone number and message body
-        sendIntent.putExtra("sms_body", "safetyPal test");
-        sendIntent.putExtra("address", new String("4087612025"));
+        sendIntent.putExtra("sms_body", helpMeAlert);
+        sendIntent.putExtra("address", new String(smsRecipients));
         // Start intent
         sendIntent.setType(intentTypeSMS);
         startActivity(sendIntent);
