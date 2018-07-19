@@ -8,6 +8,17 @@
     tools:context=".MainActivity">
 
 
+    <TextView
+        android:id="@+id/longitudeLabel"
+        android:layout_width="58dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="8dp"
+        android:text="Long:"
+        android:textAlignment="textEnd"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/mainLongView"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="230dp"
@@ -27,6 +38,7 @@
         android:layout_marginEnd="24dp"
         android:layout_marginTop="16dp"
         android:text="Log Out"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,6 +50,7 @@
         android:layout_marginTop="448dp"
         android:onClick="openCurrentLocation"
         android:text="Location"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,18 +61,20 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="448dp"
         android:onClick="openManageContacts"
-        android:text="Add Contact"
+        android:text="Add contacts"
+        android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/alarmChange"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="140dp"
+        android:layout_height="46dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="284dp"
-        android:text="alarm"
+        android:text="I need help"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -68,8 +83,8 @@
         android:id="@+id/mainLatView"
         android:layout_width="122dp"
         android:layout_height="33dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="40dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -78,10 +93,21 @@
         android:id="@+id/mainLongView"
         android:layout_width="124dp"
         android:layout_height="33dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="164dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="80dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/latitutdeLabel"
+        android:layout_width="58dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="8dp"
+        android:text="Lat:"
+        android:textAlignment="textEnd"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/mainLatView"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

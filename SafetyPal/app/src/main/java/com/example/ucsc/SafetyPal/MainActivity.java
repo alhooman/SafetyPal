@@ -241,8 +241,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String helpMeAlert = "SafetyPal alert: ";
         helpMeAlert = helpMeAlert + currentLocMapUrl;
 
-        // Recipients
-        String smsRecipients = "1234567890";
+        /*
+         * Recipients
+         * Set smsRecipients to empty string, default SMS application will load Recipient Selection
+         * Screen by default.
+         */
+        String smsRecipients = "";
+
+        /*
+         * Get recipients.
+         * For multiple recipients, traverse contactList and add phone numbers separated by
+         * semicolons.
+         */
         if(contactList.size() < 1) {
             // Avoid out of bounds error
         }
