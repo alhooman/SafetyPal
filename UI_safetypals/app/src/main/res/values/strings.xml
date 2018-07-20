@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">UI_safetypals</string>
+    <string name="tile">SafetyPal</string>
+    <string name="username"> UserName</string>
+    <string name="password"> Password</string>
+    <string name="login">LogIn</string>
+    <string name="email"> Email Address</string>
+    <string name="message">  Message</string>
+    <string name="custom_message">Custom Message(optional):</string>
+    <string name="contacts"> Contacts</string>
+</resources>
