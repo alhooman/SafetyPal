@@ -36,6 +36,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private FirebaseAuth auth;
     private DatabaseReference dataRef;
-    private Button logOutButton;
+    private ImageButton logOutButton;
     private Button alarmStart;
     private ImageView imageView;    // Make giant yellow thing clickable
 
