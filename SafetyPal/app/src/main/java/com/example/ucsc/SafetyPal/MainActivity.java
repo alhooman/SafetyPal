@@ -36,6 +36,7 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,8 +50,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth auth;
     private DatabaseReference dataRef;
     private ImageButton logOutButton;
-    private Button alarmStart;
+    private Button alarmStart;      // Currently invisble, same function as imageView
     private ImageView imageView;    // Make giant yellow thing clickable
+    private EditText customMessage; // Custom message input box
 
     /*
      * Location provider objects
@@ -223,6 +225,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /*
      * Opens default SMS application to send a request for help.
      * Ali Hooman (alhooman@ucsc.edu)
+     *
+     * SMS is used since most modern devices, as long as some connection is maintained to a cell
+     * tower, can send out an SMS.
      */
     public void sendRequestHelpSMS() {
 
@@ -233,29 +238,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          * Create maps cross-platform url using device latitude and longitude coordinates.
          * Example: https://www.google.com/maps/search/?api=1&query=47.5951518,-122.3316393
          *
-         * commonMapsUrl is the initial part of the maps URL
-         * ?api=1  -- This is required and must be set to 1. No other option is valid.
-         * &query= -- This is required to set the map to a specific location.
+         * String commonMapsUrl is the initial part of the maps URL
+         * Additional URL components (included in commonMapsUrl):
+         *      ?api=1  -- This is required and must be set to 1. No other option is valid.
+         *      &query= -- This is required to set the map to a specific location.
          */
         String commonMapsUrl = "https://www.google.com/maps/search/?api=1&query=";
-        String currentLocMapUrl;
+        String currentLocMapUrl;    // Store current latitude and longitude as string
         String latString = String.valueOf(lastDeviceLocation.getLatitude());    // Latitude
         String longString = String.valueOf(lastDeviceLocation.getLongitude());   // Longitude
-        currentLocMapUrl = commonMapsUrl + latString + "," + longString;    // Build url
+        currentLocMapUrl = commonMapsUrl + latString + "," + longString;    // Build map url
 
-        // Distress message
-        String helpMeAlert = "SafetyPal alert: ";
-        helpMeAlert = helpMeAlert + currentLocMapUrl;
+        /*
+         * Build a Distress message to be sent
+         *
+         * SMS message length limits are as follows:
+         *      160 characters for 8 bit alphabet
+         *      140 characters for 7 bit alphabet
+         *
+         * Out message lengths:
+         *      currentLocMapURL: 70
+         *      helpMeAlert:      17
+         *      white space:      3     // This is for reader clarity
+         *      Remaining space:  50
+         *
+         * Custom message must be limited to 50 characters to ensure the message is not split by
+         * the carrier resulting in the URL being divided and no longer parsed by recipient SMS
+         * application. This has been done by limiting the TextEdit input box's maxLength to 50 and
+         * truncating the custom message before being sent.
+         */
+        String helpMeAlert = "SafetyPal alert: ";       // Initial part of message
+
+        // If a custom message is set, get it and add it.
+        customMessage = findViewById(R.id.message_Text_Box);
+        if(customMessage.getText().toString().trim().equals("")) {
+            // No custom message, build final SMS message without custom message.
+            helpMeAlert = helpMeAlert + currentLocMapUrl;   // Add location url to message
+        }
+        else {
+            // Custom message exists, build final SMS with custom message.
+            String msgCustom = customMessage.getText().toString().trim();
+            if(msgCustom.length() > 50) {
+                // If greater than 50 char, trim to 50 char limit, index 0 to 49.
+                msgCustom.substring(0, 49);
+            }
+            // Build final SMS message with custom message and URL.
+            helpMeAlert = helpMeAlert + msgCustom + ": " + currentLocMapUrl;
+        }
 
         /*
          * Recipients
          * Set smsRecipients to empty string, default SMS application will load Recipient Selection
-         * Screen by default.
+         * Screen by default if this string is empty.
          */
         String smsRecipients = "";
 
         /*
-         * Get recipients.
+         * Get recipients if there are any.
          * For multiple recipients, traverse contactList and add phone numbers separated by
          * semicolons.
          */

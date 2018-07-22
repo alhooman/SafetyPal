@@ -19,6 +19,7 @@
         android:drawableStart="@drawable/ic_action_message"
         android:ems="10"
         android:hint="Type a message"
+        android:maxLength="53"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
