@@ -1,4 +1,4 @@
-package com.example.evanblank.firebasetut;
+package com.example.ucsc.SafetyPal;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.evanblank.firebasetut", appContext.getPackageName());
+        assertEquals("com.example.ucsc.SafetyPal", appContext.getPackageName());
     }
 }

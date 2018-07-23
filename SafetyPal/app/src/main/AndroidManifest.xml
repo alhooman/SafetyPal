@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.evanblank.firebasetut">
+    package="com.example.ucsc.SafetyPal">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,15 +10,17 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
 
     <application
+        android:name="com.example.ucsc.SafetyPal.Globals"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".logIn">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,8 +41,15 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:name=".CurrentLocation"
+            android:label="MyLocation"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ManageContacts"
+            android:label="ManageContacts"
+            android:windowSoftInputMode="adjustPan"
+            android:parentActivityName=".MainActivity" />
+        <service android:name=".MyAlarmServices" />
     </application>
 
 </manifest>
