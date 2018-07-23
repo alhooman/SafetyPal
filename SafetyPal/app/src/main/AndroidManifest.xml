@@ -47,6 +47,7 @@
         <activity
             android:name=".ManageContacts"
             android:label="ManageContacts"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".MainActivity" />
         <service android:name=".MyAlarmServices" />
     </application>
