@@ -9,7 +9,7 @@ import java.util.List;
 /*
  * Global variables class to create local contactList object.
  *
- * Ali Hooman (alhooman.ucsc.edu)
+ * Ali Hooman (alhooman@ucsc.edu)
  *
  * This is not the best way of doing this at all, but I have 1.5 hours and need to get
  * some stuff working.

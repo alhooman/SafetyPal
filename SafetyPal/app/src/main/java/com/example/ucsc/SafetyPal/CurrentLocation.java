@@ -159,20 +159,21 @@ public class CurrentLocation extends AppCompatActivity
                     if (task.isSuccessful()) {
                         // Set the map's camera position to the current location of the device.
                         mLastKnownLocation = task.getResult();
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                new LatLng(mLastKnownLocation.getLatitude(),
-                                        mLastKnownLocation.getLongitude()), 5));
-                        lastKnownLat = mLastKnownLocation.getLatitude();
-                        lastKnownLong = mLastKnownLocation.getLongitude();
+                        if(mLastKnownLocation != null) {
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                    new LatLng(mLastKnownLocation.getLatitude(),
+                                            mLastKnownLocation.getLongitude()), 5));
+                            lastKnownLat = mLastKnownLocation.getLatitude();
+                            lastKnownLong = mLastKnownLocation.getLongitude();
 
-                        // Add to Firebase user
-                        auth = FirebaseAuth.getInstance();
-                        FirebaseUser firebaseUser = auth.getCurrentUser();
-                        dataRef = FirebaseDatabase.getInstance().getReference().child(firebaseUser.getUid());
+                            // Add to Firebase user
+                            auth = FirebaseAuth.getInstance();
+                            FirebaseUser firebaseUser = auth.getCurrentUser();
+                            dataRef = FirebaseDatabase.getInstance().getReference().child(firebaseUser.getUid());
 
-                        dataRef.child("locationLat").setValue(lastKnownLat);
-                        dataRef.child("locationLong").setValue(lastKnownLong);
-
+                            dataRef.child("locationLat").setValue(lastKnownLat);
+                            dataRef.child("locationLong").setValue(lastKnownLong);
+                        }
                     }
                 }
         });

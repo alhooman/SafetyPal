@@ -182,20 +182,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 == PackageManager.PERMISSION_GRANTED) {
 
             // Get last location
-            Task<Location> locationResult = mFusedLocationClient.getLastLocation();
+            final Task<Location> locationResult = mFusedLocationClient.getLastLocation();
             locationResult.addOnCompleteListener(this, new OnCompleteListener<Location>() {
                 @Override
                 public void onComplete(@NonNull Task<Location> task) {
                     if (task.isSuccessful()) {
                         // Set the map's camera position to the current location of the device.
                         lastDeviceLocation = task.getResult();
-                        setLatAndLongTextViews(lastDeviceLocation);
-                        // Add to Firebase user
-                        auth = FirebaseAuth.getInstance();
-                        FirebaseUser firebaseUser = auth.getCurrentUser();
-                        dataRef = FirebaseDatabase.getInstance().getReference().child(firebaseUser.getUid());
-                        dataRef.child("locationLat").setValue(lastDeviceLocation.getLatitude());
-                        dataRef.child("locationLong").setValue(lastDeviceLocation.getLongitude());
+                        // Make sure location object exists, emulators have issues with this.
+                        if(lastDeviceLocation != null) {
+                            setLatAndLongTextViews(lastDeviceLocation);
+                            // Add to Firebase user
+                            auth = FirebaseAuth.getInstance();
+                            FirebaseUser firebaseUser = auth.getCurrentUser();
+                            dataRef = FirebaseDatabase.getInstance().getReference().child(firebaseUser.getUid());
+                            dataRef.child("locationLat").setValue(lastDeviceLocation.getLatitude());
+                            dataRef.child("locationLong").setValue(lastDeviceLocation.getLongitude());
+                        }
                     }
                 }
             });
@@ -212,8 +215,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Get coordinates from location
         double latCoord = 0.0;
         double longCoord = 0.0;
-        latCoord = location.getLatitude();
-        longCoord = location.getLongitude();
+        if(location != null) {
+            latCoord = location.getLatitude();
+            longCoord = location.getLongitude();
+        }
         // Convert to strings
         String latString = String.valueOf(latCoord);
         String longString = String.valueOf(longCoord);

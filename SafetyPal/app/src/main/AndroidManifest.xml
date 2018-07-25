@@ -50,6 +50,7 @@
             android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".MainActivity" />
         <service android:name=".MyAlarmServices" />
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
     </application>
 
 </manifest>
