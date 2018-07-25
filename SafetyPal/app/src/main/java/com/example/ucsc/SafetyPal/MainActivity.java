@@ -1,6 +1,7 @@
 package com.example.ucsc.SafetyPal;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -111,31 +112,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         alarmStatus.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+                Intent myIntent = new Intent(MainActivity.this, MyAlarmServices.class);
                 if(dataSnapshot.getValue().toString() == "true"){
-                    System.out.print("i changed value");
-                    Intent myIntent = new Intent(MainActivity.this, MyAlarmServices.class);
+
+
 
                     PendingIntent pendingIntent = PendingIntent.getService(MainActivity.this, 0, myIntent, 0);
 
 
 
-                    AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-
-
 
                     Calendar calendar = Calendar.getInstance();
-
                     calendar.setTimeInMillis(System.currentTimeMillis());
-
                     calendar.add(Calendar.SECOND, 2);
-
                     alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
 
 
                     Toast.makeText(MainActivity.this, "Start Alarm", Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(MainActivity.this, "Changed To False", Toast.LENGTH_LONG).show();
+
+                    PendingIntent pIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.cancel(pIntent);
+                   // Toast.makeText(MainActivity.this, "Changed To False", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if(view == alarmStart || view == imageView){
-            dataRef.child("isAlarmActivated").setValue(true);
+            //dataRef.child("isAlarmActivated").setValue(true);
             callGetLastLocation();
 
             sendRequestHelpSMS(); // Text for help from contacts

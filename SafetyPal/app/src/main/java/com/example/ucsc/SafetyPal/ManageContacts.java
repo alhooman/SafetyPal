@@ -2,8 +2,10 @@ package com.example.ucsc.SafetyPal;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,10 +15,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -34,6 +41,8 @@ public class ManageContacts extends AppCompatActivity implements View.OnClickLis
 
     private FirebaseAuth auth;
     private DatabaseReference dataRef;
+    private FirebaseFirestore firestore;
+    private DocumentReference usersRef;
 
     private List<contact> contactList;              // List of contact objects
     private ArrayAdapter<String> arrayAdapter;     // ArrayAdapter for ListView
@@ -99,7 +108,6 @@ public class ManageContacts extends AppCompatActivity implements View.OnClickLis
         String email = emailTextField.getText().toString();
         String number = numberTextField.getText().toString();
 
-        contact newFriend = new contact(name, email, number);
         auth = FirebaseAuth.getInstance();
 
 
@@ -115,8 +123,23 @@ public class ManageContacts extends AppCompatActivity implements View.OnClickLis
         //dataRef = FirebaseDatabase.getInstance().getReference().child(user.getUid());
         FirebaseUser user = auth.getCurrentUser();
         dataRef = FirebaseDatabase.getInstance().getReference().child(user.getUid());
-        DatabaseReference userContactList = dataRef.child("ContactList").push();
-        userContactList.setValue(newFriend);
+        firestore = FirebaseFirestore.getInstance();
+        usersRef = firestore.collection("Users").document(name);
+
+        usersRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    if(doc.exists()){
+                        addContact();
+                    }else{
+                        userDoesNotExist();
+                        Log.d("contact", "no such user");
+                    }
+                }
+            }
+        });
 
         /*
          * Add contact to MainActivity.contactList
@@ -142,4 +165,42 @@ public class ManageContacts extends AppCompatActivity implements View.OnClickLis
         finish();
         startActivity(getIntent());
     }
+
+    public void addContact(){
+
+        Toast.makeText(this, "Contact Added", Toast.LENGTH_LONG).show();
+
+        String name = nameTextField.getText().toString();
+        String email = emailTextField.getText().toString();
+        String number = numberTextField.getText().toString();
+
+        contact newFriend = new contact(name, email, number);
+        auth = FirebaseAuth.getInstance();
+
+
+        if(auth.getCurrentUser() == null){
+            finish();
+            startActivity(new Intent(this, logIn.class));
+        }
+
+
+        //dataRef = FirebaseDatabase.getInstance().getReference().child(user.getUid());
+        FirebaseUser user = auth.getCurrentUser();
+        dataRef = FirebaseDatabase.getInstance().getReference().child(user.getUid());
+        DatabaseReference userContactList = dataRef.child("ContactList");
+        userContactList.child(name).setValue(newFriend);
+
+        firestore = FirebaseFirestore.getInstance();
+        //TODO change document path to global current username variable
+        usersRef = firestore.collection("Users").document("Evan Blank Test").collection("ContactList").document(name);
+        usersRef.set(newFriend);
+
+        finish();
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+    public void userDoesNotExist(){
+        Toast.makeText(this, "User Does Not Exist", Toast.LENGTH_LONG).show();
+    }
+
 }

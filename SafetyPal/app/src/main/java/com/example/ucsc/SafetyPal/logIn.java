@@ -36,6 +36,7 @@ public class  logIn extends AppCompatActivity implements View.OnClickListener{
 
     private FirebaseAuth auth;
     private DatabaseReference dataRef;
+    private FirebaseFirestore firestore;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -53,6 +54,7 @@ public class  logIn extends AppCompatActivity implements View.OnClickListener{
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
 
+        firestore = FirebaseFirestore.getInstance();
         dataRef = FirebaseDatabase.getInstance().getReference();
 
         emailField= findViewById(R.id.email);
@@ -77,7 +79,7 @@ public class  logIn extends AppCompatActivity implements View.OnClickListener{
 
         if(TextUtils.isEmpty(user)){
             //user field is empty
-            Toast.makeText(this, "Please Enter a Username.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please Enter a Valid Username.", Toast.LENGTH_SHORT).show();
             //stopping the function from continuing
             return;
         }
@@ -117,7 +119,7 @@ public class  logIn extends AppCompatActivity implements View.OnClickListener{
                             //task is successful
                             //start activity
                             saveUserInfo();
-                            Toast.makeText(logIn.this, "Registered Succesfully!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(logIn.this, "Registered Successfully!", Toast.LENGTH_SHORT).show();
                             finish();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
@@ -140,6 +142,12 @@ public class  logIn extends AppCompatActivity implements View.OnClickListener{
         FirebaseUser currentUser = auth.getCurrentUser();
 
         dataRef.child(currentUser.getUid()).setValue(userInfo);
+
+        DataBaseUser newDBUser = new DataBaseUser(email, currentUser.getUid());
+
+        dataRef.child("Users").child(userN).setValue(newDBUser);
+
+        firestore.collection("Users").document(userN).set(userInfo);
 
         Toast.makeText(this, "Information Saved!", Toast.LENGTH_SHORT).show();
 
